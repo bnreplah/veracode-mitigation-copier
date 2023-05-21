@@ -98,8 +98,8 @@ def main():
             flaw_copy_to_list = results_to_root.findall(
                 './/{*}severity/{*}category/{*}cwe/{*}staticflaws/{*}flaw[@issueid="' + str(to_id) + '"]')
             for flaw_copy_to in flaw_copy_to_list:
-                # CHECK IF COPY TO IS ALREADY ACCEPTED
-                if flaw_copy_to.attrib['mitigation_status'] != 'accepted':
+                # CHECK IF COPY TO IS ALREADY ACCEPTED OR PROPOSED
+                if flaw_copy_to.attrib['mitigation_status'] != 'accepted' or flaw_copy_to.attrib['mitigation_status'] != 'proposed':
 
                     mitigation_list = results_from_root.findall(
                         './/{*}severity/{*}category/{*}cwe/{*}staticflaws/{*}flaw[@issueid="' + str(
@@ -107,7 +107,7 @@ def main():
 
                     for mitigation_action in mitigation_list:
                         proposal_action = mitigation_action.attrib['action']
-                        proposal_comment = '[COPIED FROM BUILD ' + args.frombuild + ' of App ID ' + \
+                        proposal_comment = '[COPIED FROM BUILD ' + args.frombuild + ' of ' + \
                                            results_from_app_id + '] ' + mitigation_action.attrib['description']
                         update_mitigation_info(args.tobuild, to_id, proposal_action, proposal_comment,
                                                results_from_app_id, args.vid,

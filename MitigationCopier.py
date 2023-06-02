@@ -75,6 +75,13 @@ def filter_approved(findings,id_list):
     
     return [f for f in findings if (f['finding_status']['resolution_status'] == 'APPROVED')]
 
+def filter_proposed(findings,id_list):
+    if id_list is not None:
+        log.info('Only copying the following findings provided in id_list: {}'.format(id_list))
+        findings = [f for f in findings if f['issue_id'] in id_list]
+    
+    return [f for f in findings if (f['finding_status']['resolution_status'] == 'PROPOSED')]
+
 def format_file_path(file_path):
 
     # special case - omit prefix for teamcity work directories, which look like this:
@@ -136,7 +143,7 @@ def update_mitigation_info_rest(to_app_guid,flaw_id,action,comment,sandbox_guid=
     if action == 'CONFORMS' or action == 'DEVIATES':
         log.warning('Cannot copy {} mitigation for Flaw ID {} in {}'.format(action,flaw_id,to_app_guid))
         return
-    elif action == 'APPROVED':
+    elif action == 'APPROVED' or action == 'PROPOSED':
         if propose_only:
             log.info('propose_only set to True; skipping applying approval for flaw_id {}'.format(flaw_id))
             return
@@ -156,6 +163,15 @@ def set_in_memory_flaw_to_approved(findings_to,to_id):
         if all (k in finding for k in ("id", "finding")):
             if (finding["id"] == to_id):
                 finding['finding']['finding_status']['resolution_status'] = 'APPROVED'
+                
+def set_in_memory_flaw_to_proposed(findings_to,to_id):
+    # use this function to update the status of target findings in memory, so that, if it is found
+    # as a match for multiple flaws, we only copy the mitigations once.
+    for finding in findings_to:
+        if all (k in finding for k in ("id", "finding")):
+            if (finding["id"] == to_id):
+                finding['finding']['finding_status']['resolution_status'] = 'PROPOSED'
+    
 
 def match_for_scan_type(from_app_guid, to_app_guid, dry_run, scan_type='STATIC',from_sandbox_guid=None, 
         to_sandbox_guid=None, propose_only=False, id_list=[], fuzzy_match=False):
@@ -169,9 +185,12 @@ def match_for_scan_type(from_app_guid, to_app_guid, dry_run, scan_type='STATIC',
         return 0 # no source findings to copy!   
    
     findings_from_approved = filter_approved(findings_from,id_list)
+    findings_from_proposed = filter_proposed(findings_from,id_list)
 
     if len(findings_from_approved) == 0:
         logprint('No approved findings in "from" {}. Exiting.'.format(formatted_from))
+    elif len(findings_from_proposed) == 0:
+        logprint('No proposed findings in "from" {}. Exiting.'.format(formatted_from))
         return 0
 
     results_to_app_name = get_application_name(to_app_guid)
@@ -196,28 +215,35 @@ def match_for_scan_type(from_app_guid, to_app_guid, dry_run, scan_type='STATIC',
 
         if this_to_finding['finding_status']['resolution_status'] == 'APPROVED':
             logprint ('Flaw ID {} in {} already has an accepted mitigation; skipped.'.format(to_id,formatted_to))
-            continue 
+            continue
+        elif this_to_finding['finding_status']['resolution_status'] == 'PROPOSED':
+            logprint ('Flaw ID {} in {} already has a proposed mitigation; skipped.'.format(to_id,formatted_to))
+            continue
 
-        match = Findings().match(this_to_finding,findings_from,approved_matches_only=True,allow_fuzzy_match=fuzzy_match)
+        match = Findings().match(this_to_finding,findings_from,approved_matches_only=False,allow_fuzzy_match=fuzzy_match)
 
         if match == None:
-            log.info('No approved match found for finding {} in {}'.format(to_id,formatted_from))
+            log.info('No approved or proposed match found for finding {} in {}'.format(to_id,formatted_from))
             continue
 
         from_id = match.get('id')
 
         log.info('Source flaw {} in {} has a possible target match in flaw {} in {}.'.format(from_id,formatted_from,to_id,formatted_to))
-
-        mitigation_list = match['finding']['annotations']
-        logprint ('Applying {} annotations for flaw ID {} in {}...'.format(len(mitigation_list),to_id,formatted_to))
+        mitigation_list = ''
+        if match['finding'].get('annotations') == None:
+            logprint ('{} annotations for flaw ID {} in {}...'.format(len(mitigation_list),to_id,formatted_to))
+        else:
+            mitigation_list = match['finding']['annotations']
+            logprint ('Applying {} annotations for flaw ID {} in {}...'.format(len(mitigation_list),to_id,formatted_to))
 
         for mitigation_action in reversed(mitigation_list): #findings API puts most recent action first
             proposal_action = mitigation_action['action']
-            proposal_comment = '[COPIED FROM APP {}] {}'.format(from_app_guid, mitigation_action['comment'])
+            proposal_comment = '(COPIED FROM APP {}) {}'.format(from_app_guid, mitigation_action['comment'])
             if not(dry_run):
                 update_mitigation_info_rest(to_app_guid, to_id, proposal_action, proposal_comment, to_sandbox_guid, propose_only)
 
         set_in_memory_flaw_to_approved(copy_array_to,to_id) # so we don't attempt to mitigate approved finding twice
+        set_in_memory_flaw_to_proposed(copy_array_to,to_id) # so we don't attempt to mitigate proposed finding twice
         counter += 1
 
     print('[*] Updated {} flaws in {}. See log file for details.'.format(str(counter),formatted_to))

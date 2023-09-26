@@ -1,3 +1,4 @@
 veracode-api-py>=0.9.18
 logging-formatter-anticrlf>=1.2
 Pygments == 2.7.4
+lxml==4.9.3

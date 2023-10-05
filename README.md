@@ -1,8 +1,12 @@
 # Veracode Mitigation Copier
 
+https://github.com/$GITHUB_REPOSITORY
+![ Veracode SCA ](https://github.com/$GITHUB_REPOSITORY/.github/workflows/sca.yml/badge.svg)
+![ Veracode Static ](https://github.com/$GITHUB_REPOSITORY/.github/workflows/pipeline-scan-py.yml/badge.svg)
+
+
 
 [MitigationCopierv2](#mitigationcopierv2py)
-
 
 Copies mitigations from one Veracode profile to another if it's the same flaw based on the following flaw attributes:
 

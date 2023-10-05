@@ -1,5 +1,6 @@
 # Veracode Mitigation Copier
 
+
 [MitigationCopierv2](#mitigationcopierv2py)
 
 
@@ -94,23 +95,21 @@ You must provide the legacy Veracode application ID values for both application 
 # MitigationCopierv2.py #
 
 The mitigation copier 2 is an alternative python entry point to utilize the program in order to copy proposed mitigations between builds. This allows you to copy mitigations from a sandbox scan in one application profile to a scan in another application profile, or the same application profile. 
-The mitigation copier 2 is originally the work of gilmore867. Current additions include the ability to read a csv providing the build id of the scan with the mitigations to be copied and the build id of the recipient scan to recieve the copied mitigations. Aside from that the project is relatively the same.  
+The mitigation copier 2 is originally the work of gilmore867. Current additions include the ability to read a csv providing the build id of the scan with the mitigations to be copied and the build id of the recipient scan to recieve the copied mitigations. 
 
 
 ## Setup ##
 
-> MitigationCopierv2.py was created by gilmore867 
-
+(2.0)
 ```
 git clone https://github.com/gilmore867/veracode-mitigation-copier
 ```
-with csv functionality:
+with csv functionality: (2.1)
 ```
 git clone https://github.com/bnreplah/veracode-mitigation-copier
 ```
 
-> The remainder of the set up matches that described above. The MitigationCopier.py will still be availble to use. [Usage for MitigationCopier.py](README.md#Veracode-Mitigation-Copier##Run)
-
+> The remainder of the set up matches that described above. The MitigationCopier.py will still be availble to use. [Usage for MitigationCopier.py](#Veracode-Mitigation-Copier##Run)
 
 The modification to the mitigation copier 2 in this repo, allows for the ability to pass a csv with the build ids mapped to and from in the first two columns.
 
@@ -136,8 +135,16 @@ python MitigationCopierv2.py -f 112313421 -t 133343421 -v $VERACODE_API_KEY_ID -
 ```
 or to copy using the csv feature
 
+
 ```shell
 python MitigationCopierv2.py -csv true -c tofrombuild.csv -v $VERACODE_API_KEY_ID -k $VERACODE_API_KEY_SECRET 
 ```
 
+
+
+## Variations
+
+1. Original: https://github.com/brian1917/veracode-mitigation-copier
+2. tjarettveracode: https://github.com/tjarrettveracode/veracode-mitigation-copier
+3. gilmor897: https://github.com/gilmore867/veracode-mitigation-copier
 

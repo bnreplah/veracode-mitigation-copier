@@ -1,5 +1,8 @@
 # Veracode Mitigation Copier
 
+[MitigationCopierv2](#MitigationCopierv2.py)
+
+
 Copies mitigations from one Veracode profile to another if it's the same flaw based on the following flaw attributes:
 
 - **Static**: `cweid`, `type`, `sourcefile`, and `line` (see Note 1 below)
@@ -7,8 +10,6 @@ Copies mitigations from one Veracode profile to another if it's the same flaw ba
 - **Dynamic**: `cweid`, `path` and `vulnerable_parameter`
 
 The script will copy all proposed and accepted mitigations for the flaw. The script will skip a flaw in the `copy_to` build if it already has an accepted mitigation.
-
-
 
 *Note*: This script requires Python 3!
 
@@ -93,12 +94,29 @@ You must provide the legacy Veracode application ID values for both application 
 # MitigationCopierv2.py #
 
 The mitigation copier 2 is an alternative python entry point to utilize the program in order to copy proposed mitigations between builds. This allows you to copy mitigations from a sandbox scan in one application profile to a scan in another application profile, or the same application profile. 
-The mitigation copier 2 originally can be found: 
+The mitigation copier 2 is originally the work of gilmore867. Current additions include the ability to read a csv providing the build id of the scan with the mitigations to be copied and the build id of the recipient scan to recieve the copied mitigations. Aside from that the project is relatively the same.  
+
+
+## Setup ##
+
+> MitigationCopierv2.py was created by gilmore867 
+
+```
+git clone https://github.com/gilmore867/veracode-mitigation-copier
+```
+with csv functionality:
+```
+git clone https://github.com/bnreplah/veracode-mitigation-copier
+```
+
+> The remainder of the set up matches that described above. The MitigationCopier.py will still be availble to use. [Usage for MitigationCopier.py](README.md#Veracode-Mitigation-Copier##Run)
+
+
 The modification to the mitigation copier 2 in this repo, allows for the ability to pass a csv with the build ids mapped to and from in the first two columns.
 
 ```csv
 
-fromBuildID, toBuildID
+fromBuildId, toBuildId
 112313421, 133343421
 112313421, 134353421
 112313421, 133345421

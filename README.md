@@ -8,6 +8,8 @@ Copies mitigations from one Veracode profile to another if it's the same flaw ba
 
 The script will copy all proposed and accepted mitigations for the flaw. The script will skip a flaw in the `copy_to` build if it already has an accepted mitigation.
 
+
+
 *Note*: This script requires Python 3!
 
 ## Setup
@@ -81,7 +83,43 @@ You must provide the legacy Veracode application ID values for both application 
 
     python MitigationCopier.py --prompt --dry_run
 
+
 ## Notes
 
 1. For static findings, when matching by line number, we automatically look within a range of line numbers around the original finding line number to allow for drift. This is controlled by the constant `LINE_NUMBER_SLOP` declared at the top of the file.
 2. For static findings when source file information is not available, we try to use procedure and relative location. This is less predictable so it is recommended that you perform a dry run when copying mitigations from non-debug code. Unlike when source file information is available, we do not use "sloppy matching" in this case -- we have observed that mitigations in non-debug code are most common when a binary dependency is being reused across teams and thus locations are less likely to change.
+
+
+# MitigationCopierv2.py #
+
+The mitigation copier 2 is an alternative python entry point to utilize the program in order to copy proposed mitigations between builds. This allows you to copy mitigations from a sandbox scan in one application profile to a scan in another application profile, or the same application profile. 
+The mitigation copier 2 originally can be found: 
+The modification to the mitigation copier 2 in this repo, allows for the ability to pass a csv with the build ids mapped to and from in the first two columns.
+
+```csv
+
+fromBuildID, toBuildID
+112313421, 133343421
+112313421, 134353421
+112313421, 133345421
+112313421, 133452321 
+```
+
+## Run ##
+
+```shell
+MitigationCopierv2.py [-h] [-f FROMBUILD] [-t TOBUILD] [-v VID] [-k VKEY] [-c CSV] [-csv READFROMCSV]
+Either --frombuild and --tobuild or --csv and --readfromcsv set to true must be provided
+```
+
+to copy mitigations from build `112313421` to build `133343421`
+```
+python MitigationCopierv2.py -f 112313421 -t 133343421 -v $VERACODE_API_KEY_ID -k $VERACODE_API_KEY_SECRET 
+```
+or to copy using the csv feature
+
+```shell
+python MitigationCopierv2.py -csv true -c tofrombuild.csv -v $VERACODE_API_KEY_ID -k $VERACODE_API_KEY_SECRET 
+```
+
+

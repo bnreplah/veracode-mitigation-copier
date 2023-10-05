@@ -10,15 +10,15 @@ from helpers import api
 
 ## Imported from main Mitigation Copier to read the credential file
 ## BH 9/21/23
-import datetime
-from veracode_api_py.api import VeracodeAPI as vapi
+# import datetime
+# from veracode_api_py.api import VeracodeAPI as vapi
 
-def creds_expire_days_warning():
-    creds = vapi().get_creds()
-    exp = datetime.datetime.strptime(creds['expiration_ts'], "%Y-%m-%dT%H:%M:%S.%f%z")
-    delta = exp - datetime.datetime.now().astimezone() #we get a datetime with timezone...
-    if (delta.days < 7):
-        print('These API credentials expire ', creds['expiration_ts'])
+# def creds_expire_days_warning():
+#     creds = vapi().get_creds()
+#     exp = datetime.datetime.strptime(creds['expiration_ts'], "%Y-%m-%dT%H:%M:%S.%f%z")
+#     delta = exp - datetime.datetime.now().astimezone() #we get a datetime with timezone...
+#     if (delta.days < 7):
+#         print('These API credentials expire ', creds['expiration_ts'])
 
 
 parser = argparse.ArgumentParser(

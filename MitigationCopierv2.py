@@ -58,7 +58,7 @@ def validate_args(args):
     if not ( args.readfromcsv and args.csv ) and not (args.frombuild and args.tobuild):
         parser.error("Either --frombuild and --tobuild or --csv and --readfromcsv set to true must be provided")
     if not ( args.vkey and args.vid):
-        print("Checking for credentials file")
+        print("API Credentials not provided [https://docs.veracode.com/r/t_create_api_creds] \nChecking for credentials in enviornment [https://docs.veracode.com/r/c_configure_api_cred_file]")
 
 
 

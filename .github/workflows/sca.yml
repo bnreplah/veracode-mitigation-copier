@@ -36,7 +36,7 @@ jobs:
         EXTRA_ARGS: '--update-advisor --pull-request --unmatched'
       run: |
         curl -sSL https://download.sourceclear.com/ci.sh | sh -s -- scan $EXTRA_ARGS
-
+        echo " Pull Requests are only made on Found Vulnerable Methods "
     #git config --global user.email "${{ secrets.USER_EMAIL }}"
     #git config --global user.name "${{ secrets.USER_NAME }}"
         

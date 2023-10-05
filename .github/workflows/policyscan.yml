@@ -34,7 +34,7 @@ jobs:
         with:
           appname: 'veracode-mitigation-copier'
           filepath: 'project.zip'
-          vid: '${{ secrets.VERACODE_API_ID }}'
-          vkey: '${{ secrets.VERACODE_API_KEY }}'
+          vid: '${{ secrets.VERACODE_API_KEY_ID }}'
+          vkey: '${{ secrets.VERACODE_API_KEY_SECRET }}'
           scantimeout: 15
           createprofile: true

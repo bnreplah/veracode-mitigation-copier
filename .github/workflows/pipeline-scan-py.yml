@@ -50,7 +50,7 @@ jobs:
     - name: Pipeline Scan
       run: |
         cd /github/home
-        java -jar /opt/veracode/pipeline-scan.jar --veracode_api_id="${{secrets.VERACODE_API_ID}}" --veracode_api_key="${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file="project.zip" --app_id="${{secrets.VERACODE_APP_ID}}" --json_output_file="results.json"
+        java -jar /opt/veracode/pipeline-scan.jar --veracode_api_id="${{secrets.VERACODE_API_KEY_ID}}" --veracode_api_key="${{secrets.VERACODE_API_KEY_SECRET}}" --fail_on_severity="Very High, High" --file="project.zip" --app_id="${{secrets.VERACODE_APP_ID}}" --json_output_file="results.json"
       continue-on-error: true
 
     - uses: actions/upload-artifact@v2
@@ -69,16 +69,16 @@ jobs:
       with:
         name: ScanResults
 
-#    - name: convert
-#      uses: veracode/veracode-pipeline-scan-results-to-sarif@master
-#      with:
-#        pipeline-results-json: results.json
-#        output-results-sarif: veracode-results.sarif
-#        finding-rule-level: "4:3:0"
-#    - uses: github/codeql-action/upload-sarif@v1
-#      with:
-#    # Path to SARIF file relative to the root of the repository
-#        sarif_file: veracode-results.sarif   
+    - name: convert
+      uses: veracode/veracode-pipeline-scan-results-to-sarif@master
+      with:
+        pipeline-results-json: results.json
+        output-results-sarif: veracode-results.sarif
+        finding-rule-level: "4:3:0"
+    - uses: github/codeql-action/upload-sarif@v1
+      with:
+    # Path to SARIF file relative to the root of the repository
+        sarif_file: veracode-results.sarif   
 
 
     - name: Veracode scan results to GitHub issues Action

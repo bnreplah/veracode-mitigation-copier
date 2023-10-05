@@ -1,6 +1,6 @@
 # Veracode Mitigation Copier
 
-[MitigationCopierv2](#MitigationCopierv2.py)
+[MitigationCopierv2](#mitigationcopierv2.py)
 
 
 Copies mitigations from one Veracode profile to another if it's the same flaw based on the following flaw attributes:

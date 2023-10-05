@@ -1,8 +1,8 @@
 # Veracode Mitigation Copier
 
 https://github.com/$GITHUB_REPOSITORY
-![ Veracode SCA ](https://github.com/$GITHUB_REPOSITORY/.github/workflows/sca.yml/badge.svg)
-![ Veracode Static ](https://github.com/$GITHUB_REPOSITORY/.github/workflows/pipeline-scan-py.yml/badge.svg)
+![ Veracode SCA ](https://github.com/bnreplah/veracode-mitigation-copier/.github/workflows/sca.yml/badge.svg)
+![ Veracode Static ](https://github.com/bnreplah/veracode-mitigation-copier.github/workflows/pipeline-scan-py.yml/badge.svg)
 
 
 

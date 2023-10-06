@@ -3,7 +3,7 @@
 
 ![ Veracode SCA ](https://github.com/bnreplah/veracode-mitigation-copier/actions/workflows/sca.yml/badge.svg)
 ![ Veracode Static ](https://github.com/bnreplah/veracode-mitigation-copier/actions/workflows/pipeline-scan-py.yml/badge.svg)
-![ Veracode Policy Scan ](https://github.com/bnreplah/veracode-mitigation-copier/actions/workflows/policyscan.yml/badge.svg)
+
 
 
 [MitigationCopierv2](#mitigationcopierv2py)

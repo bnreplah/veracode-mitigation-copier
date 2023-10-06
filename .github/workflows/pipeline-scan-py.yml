@@ -75,11 +75,15 @@ jobs:
         pipeline-results-json: results.json
         output-results-sarif: veracode-results.sarif
         finding-rule-level: "4:3:0"
+   
+    - run: |
+        ls -la
+        
     - uses: github/codeql-action/upload-sarif@v1
       with:
     # Path to SARIF file relative to the root of the repository
         sarif_file: veracode-results.sarif   
-
+      continue-on-error: true
 
     - name: Veracode scan results to GitHub issues Action
       # You may pin to the exact commit or the version.

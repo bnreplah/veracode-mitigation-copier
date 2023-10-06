@@ -58,6 +58,12 @@ jobs:
         name: ScanResults
         path: /github/home/results.json
 
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ScanResults
+        path: /github/home/filtered_results.json
+      continue-on-error: true
+
   # Convert pipeline scan output to SARIF format  
   process-results:
     needs: pipeline-scan

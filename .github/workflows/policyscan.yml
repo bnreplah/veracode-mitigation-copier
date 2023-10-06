@@ -36,5 +36,5 @@ jobs:
           filepath: 'project.zip'
           vid: '${{ secrets.VERACODE_API_KEY_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY_SECRET }}'
-          scantimeout: 15
+          scantimeout: 120
           createprofile: true

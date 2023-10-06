@@ -60,7 +60,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: ScanResults
+        name: ScanResultsFiltered
         path: /github/home/filtered_results.json
       continue-on-error: true
 
@@ -74,6 +74,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: ScanResults
+
+
+    - name: Retrieve results Filtered
+      uses: actions/download-artifact@v2
+      with:
+        name: ScanResultsFiltered
 
     - name: convert
       uses: veracode/veracode-pipeline-scan-results-to-sarif@master

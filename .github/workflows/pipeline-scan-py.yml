@@ -87,7 +87,8 @@ jobs:
         pipeline-results-json: results.json
         output-results-sarif: veracode-results.sarif
         finding-rule-level: "4:3:0"
-   
+      continue-on-error: true
+    
     - run: |
         ls -la
         

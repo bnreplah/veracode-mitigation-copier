@@ -146,7 +146,7 @@ python MitigationCopierv2.py -csv true -c tofrombuild.csv -v $VERACODE_API_KEY_I
 
 
 
-## Variations
+## Acknowledgements and Variations 
 
 1. Original: https://github.com/brian1917/veracode-mitigation-copier
 2. tjarettveracode: https://github.com/tjarrettveracode/veracode-mitigation-copier

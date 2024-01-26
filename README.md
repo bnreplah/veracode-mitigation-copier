@@ -2,7 +2,7 @@
 
 
 ![ Veracode SCA ](https://github.com/bnreplah/veracode-mitigation-copier/actions/workflows/sca.yml/badge.svg)
-![ Veracode Static ](https://github.com/bnreplah/veracode-mitigation-copier/actions/workflows/pipeline-scan-py.yml/badge.svg)
+
 
 
 

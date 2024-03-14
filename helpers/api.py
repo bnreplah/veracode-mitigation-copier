@@ -82,6 +82,11 @@ class VeracodeAPI:
         """Returns a detailed report for a given build ID."""
         return self._request(self.baseurl + "/5.0/detailedreport.do", "GET", params={"build_id": build_id})
 
+    def get_detailed_report_proxy(self, build_id, account_id):
+        """Returns a detailed report for a given build ID."""
+        return self._request(self.baseurl + "/5.0/detailedreport.do", "GET", params={"build_id": build_id , "account_id": account_id})
+
+
     def set_mitigation_info(self,build_id,flaw_id_list,action,comment, results_from_app_id):
         """Adds a new mitigation proposal, acceptance, rejection, or comment for a set of flaws for an application."""
         if action == 'Mitigate by Design':
@@ -100,3 +105,24 @@ class VeracodeAPI:
             action = 'comment'
         payload = {'build_id': build_id, 'flaw_id_list': flaw_id_list, 'action': action, 'comment': comment}
         return self._request(self.baseurl + "/updatemitigationinfo.do", "POST", params=payload)
+
+
+    def set_mitigation_info_proxy(self,build_id,flaw_id_list,action,comment, results_from_app_id, account_id):
+        """Adds a new mitigation proposal, acceptance, rejection, or comment for a set of flaws for an application."""
+        if action == 'Mitigate by Design':
+            action = 'appdesign'
+        elif action == 'Mitigate by Network Environment':
+            action = 'netenv'
+        elif action == 'Mitigate by OS Environment':
+            action = 'osenv'
+        elif action == 'Approve Mitigation':
+            action = 'accepted'
+        elif action == 'Reject Mitigation':
+            action = 'rejected'
+        elif action == 'Potential False Positive':
+            action = 'fp'
+        else:
+            action = 'comment'
+        payload = {'build_id': build_id, 'flaw_id_list': flaw_id_list, 'action': action, 'comment': comment, "account_id": account_id}
+        return self._request(self.baseurl + "/updatemitigationinfo.do", "POST", params=payload)
+
